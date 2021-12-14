@@ -1,6 +1,17 @@
+require('dotenv').config();
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
+const mongoose = require('mongoose');
+
+// deconstructing assignment
+const { PORT, MONGO_URI } = process.env;
+
+//connect mongoose
+mongoose
+  .connect(MONGO_URI, { useNewUrlParser: true, useFindAndModity: false })
+  .then(() => console.log('MongoDB Connected'))
+  .catch((err) => console.log(err));
 
 const api = require('./api');
 
@@ -16,6 +27,7 @@ app.use(bodyParser());
 // apply router to the instance
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(4000, () => {
+const port = PORT || 4000;
+app.listen(port, () => {
   console.log('server is running at http://localhost:4000');
 });
