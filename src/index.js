@@ -1,3 +1,7 @@
+/* eslint-disable no-global-assign */
+require = require('esm')(module/*, options*/);
+module.exports = require('./main.js');
+
 require('dotenv').config();
 const Koa = require('koa');
 const Router = require('koa-router');
