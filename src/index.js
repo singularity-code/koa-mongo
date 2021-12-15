@@ -1,6 +1,6 @@
 /* eslint-disable no-global-assign */
 require = require('esm')(module/*, options*/);
-//module.exports = require('./index.js');
+module.exports = require('./index.js');
 
 require('dotenv').config();
 import Koa from 'koa';
@@ -15,7 +15,7 @@ const { PORT, MONGO_URI } = process.env;
 
 //connect mongoose
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useFindAndModity: false })
+  .connect(MONGO_URI, { useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
