@@ -1,12 +1,14 @@
 /* eslint-disable no-global-assign */
 require = require('esm')(module/*, options*/);
-module.exports = require('./main.js');
+//module.exports = require('./index.js');
 
 require('dotenv').config();
-const Koa = require('koa');
-const Router = require('koa-router');
-const bodyParser = require('koa-bodyparser');
-const mongoose = require('mongoose');
+import Koa from 'koa';
+import Router from 'koa-router';
+import bodyParser from 'koa-bodyparser';
+import mongoose from 'mongoose';
+
+import api from './api';
 
 // deconstructing assignment
 const { PORT, MONGO_URI } = process.env;
@@ -16,8 +18,6 @@ mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useFindAndModity: false })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
-
-const api = require('./api');
 
 const app = new Koa();
 const router = new Router();

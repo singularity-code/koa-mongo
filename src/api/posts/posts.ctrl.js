@@ -9,7 +9,7 @@ const posts = [
   },
 ];
 
-exports.write = (ctx) => {
+export const write = (ctx) => {
   // REST API Request body can be called from ctx.request.body
   const { title, body } = ctx.request.body;
   postId += 1;
@@ -19,12 +19,12 @@ exports.write = (ctx) => {
 };
 
 // GET /api/posts
-exports.list = (ctx) => {
+export const list = (ctx) => {
   ctx.body = posts;
 };
 
 // GET /api/posts/:id
-exports.read = (ctx) => {
+export const read = (ctx) => {
   const { id } = ctx.params;
   const post = posts.find((post) => post.id.toString() === id);
   if (!post) {
@@ -38,7 +38,7 @@ exports.read = (ctx) => {
 };
 
 // DELETE /api/posts/:id
-exports.remove = (ctx) => {
+export const remove = (ctx) => {
   const { id } = ctx.params;
   const postIndex = posts.findIndex((post) => post.id.toString() === id);
   if (postIndex === -1) {
@@ -53,7 +53,7 @@ exports.remove = (ctx) => {
 };
 
 // PUT /api/posts/:id
-exports.replace = (ctx) => {
+export const replace = (ctx) => {
   const { id } = ctx.params;
   const postIndex = posts.findIndex((post) => post.id.toString() === id);
   if (postIndex === -1) {
@@ -71,7 +71,7 @@ exports.replace = (ctx) => {
 };
 
 // PATCH /api/posts/:id
-exports.update = (ctx) => {
+export const update = (ctx) => {
   const { id } = ctx.params;
   const postIndex = posts.findIndex((post) => post.id.toString() === id);
   if (postIndex === -1) {
