@@ -1,5 +1,5 @@
 /* eslint-disable no-global-assign */
-require = require('esm')(module/*, options*/);
+require = require('esm')(module /*, options*/);
 module.exports = require('./index.js');
 
 require('dotenv').config();
@@ -15,7 +15,16 @@ const { PORT, MONGO_URI, USER_NAME, PASSWORD } = process.env;
 
 //connect mongoose
 mongoose
-  .connect(MONGO_URI, {useNewUrlParser: true })
+  .connect(MONGO_URI, {
+    maxPoolSize: 10,
+    auth: {
+      authSource: 'admin',
+    },
+    user: USER_NAME,
+    pass: PASSWORD,
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
