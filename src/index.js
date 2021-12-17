@@ -11,11 +11,11 @@ import mongoose from 'mongoose';
 import api from './api';
 
 // deconstructing assignment
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI, USER_NAME, PASSWORD } = process.env;
 
 //connect mongoose
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true })
+  .connect(MONGO_URI, {useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
