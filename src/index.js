@@ -16,12 +16,6 @@ const { PORT, MONGO_URI, USER_NAME, PASSWORD } = process.env;
 //connect mongoose
 mongoose
   .connect(MONGO_URI, {
-    maxPoolSize: 10,
-    auth: {
-      authSource: 'admin',
-    },
-    user: USER_NAME,
-    pass: PASSWORD,
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
