@@ -1,4 +1,16 @@
 import Post from '../../models/post';
+import mongoose from 'mongoose';
+
+const { ObjectId } = mongoose.Typese;
+
+export const checkObjectId = (ctx, next) => {
+  const { id } = ctx.params;
+  if (!ObjectId.isValid(id)) {
+    ctx.status = 400; // Bad request
+    return;
+  }
+  return next();
+};
 
 export const write = async (ctx) => {
   const { title, body, tags } = ctx.request.body;
