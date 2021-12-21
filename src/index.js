@@ -7,6 +7,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
+import generateFakeData from './generate_fake_data';
 
 import api from './api';
 
@@ -19,7 +20,11 @@ mongoose
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
-  .then(() => console.log('MongoDB Connected'))
+  .then(() => {
+    console.log('MongoDB Connected');
+    // generate fakeblog
+    //generateFakeData();
+  })
   .catch((err) => console.log(err));
 
 const app = new Koa();
