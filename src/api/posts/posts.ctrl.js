@@ -1,7 +1,8 @@
 import Post from '../../models/post';
 import mongoose from 'mongoose';
+import Joi from 'joi';
 
-const { ObjectId } = mongoose.Typese;
+const { ObjectId } = mongoose.Types;
 
 export const checkObjectId = (ctx, next) => {
   const { id } = ctx.params;
@@ -13,6 +14,20 @@ export const checkObjectId = (ctx, next) => {
 };
 
 export const write = async (ctx) => {
+  // verify params with Joi
+  const schema = Joi.object().keys({
+    title: Joi.string().required(),
+    body: Joi.string().required(),
+    tags: Joi.array().items(Joi.string()).required(),
+  });
+
+  // handle errors from verification
+  const result = schema.validate(ctx.required.body);
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
   const { title, body, tags } = ctx.request.body;
   const post = new Post({
     title,
