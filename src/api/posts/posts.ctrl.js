@@ -76,12 +76,20 @@ export const remove = async (ctx) => {
 
 export const update = async (ctx) => {
   const { id } = ctx.params;
-  const { title, body, tags } = ctx.request.body;
+  const schema = Joi.object().keys({
+    title: Joi.string(),
+    body: Joi.string(),
+    tags: Joi.array().items(Joi.string()),
+  });
+  const result = schema.validate(ctx.request.body);
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
   try {
-    const post = await Post.findByIdAndUpdate(id, {
-      title,
-      body,
-      tags,
+    const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
+      new: true,
     }).exec();
     if (!post) {
       ctx.status = 404;
