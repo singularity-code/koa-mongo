@@ -7,6 +7,7 @@ export const register = async (ctx) => {
     password: Joi.string().required(),
   });
   const result = schema.validate(ctx.request.body);
+  console.log(result);
   if (result.error) {
     ctx.status = 400;
     ctx.body = result.error;
@@ -32,7 +33,28 @@ export const register = async (ctx) => {
   }
 };
 
-export const login = async (ctx) => {};
+export const login = async (ctx) => {
+  const { username, password } = ctx.request.body;
+  if (!username || !password) {
+    ctx.status = 401;
+    return;
+  }
+  try {
+    const user = await User.findByUsername(username);
+    if (!user) {
+      ctx.status = 401;
+      return;
+    }
+    const valid = await user.checkPassword(password);
+    if (!valid) {
+      ctx.status = 401;
+      return;
+    }
+    ctx.body = user.serialize();
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
 
 export const check = async (ctx) => {};
 
