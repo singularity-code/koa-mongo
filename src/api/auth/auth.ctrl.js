@@ -7,7 +7,6 @@ export const register = async (ctx) => {
     password: Joi.string().required(),
   });
   const result = schema.validate(ctx.request.body);
-  console.log(result);
   if (result.error) {
     ctx.status = 400;
     ctx.body = result.error;
@@ -57,7 +56,7 @@ export const login = async (ctx) => {
       return;
     }
     ctx.body = user.serialize();
-    const toekn = user.generateToken();
+    const token = user.generateToken();
     ctx.cookies.set('access_token', token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
@@ -67,6 +66,13 @@ export const login = async (ctx) => {
   }
 };
 
-export const check = async (ctx) => {};
+export const check = async (ctx) => {
+  const { user } = ctx.state;
+  if (!user) {
+    ctx.status = 401;
+    return;
+  }
+  ctx.body = user;
+};
 
 export const logout = async (ctx) => {};
