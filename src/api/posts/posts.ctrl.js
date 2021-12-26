@@ -14,6 +14,7 @@ export const checkObjectId = (ctx, next) => {
 };
 
 export const write = async (ctx) => {
+  console.log(ctx)
   // verify params with Joi
   const schema = Joi.object().keys({
     title: Joi.string().required(),
@@ -33,6 +34,7 @@ export const write = async (ctx) => {
     title,
     body,
     tags,
+    user: ctx.status.user,
   });
   try {
     await post.save();
@@ -53,15 +55,19 @@ export const list = async (ctx) => {
     // const posts = await Post.find().exec();
 
     // order by recent post
-    const posts = await Post.find().sort({ _id: -1 }).limit(10).skip((page - 1) * 10).lean().exec();
+    const posts = await Post.find()
+      .sort({ _id: -1 })
+      .limit(10)
+      .skip((page - 1) * 10)
+      .lean()
+      .exec();
     // set lastpage
     const postCount = await Post.countDocuments().exec();
-    ctx.set('Last-Page', Math.ceil(postCount/ 10));
-    ctx.body = posts.map(post => ({
+    ctx.set('Last-Page', Math.ceil(postCount / 10));
+    ctx.body = posts.map((post) => ({
       ...post,
-      body:
-        post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}`,
-    }))
+      body: post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}`,
+    }));
   } catch (e) {
     ctx.throw(500, e);
   }
