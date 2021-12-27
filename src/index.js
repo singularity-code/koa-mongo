@@ -17,16 +17,16 @@ const { PORT, MONGO_URI, USER_NAME, PASSWORD } = process.env;
 
 //connect mongoose
 mongoose
-  .connect(MONGO_URI, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log('MongoDB Connected');
-    // generate fakeblog
-    //generateFakeData();
-  })
-  .catch((err) => console.log(err));
+	.connect(MONGO_URI, {
+		useUnifiedTopology: true,
+		useNewUrlParser: true,
+	})
+	.then(() => {
+		console.log('MongoDB Connected');
+		// generate fakeblog
+		//generateFakeData();
+	})
+	.catch((err) => console.log(err));
 
 const app = new Koa();
 const router = new Router();
@@ -39,10 +39,10 @@ app.use(bodyParser());
 app.use(jwt_middleware);
 
 // apply router to the instance
-app.use(router.routes())
+app.use(router.routes());
 app.use(router.allowedMethods());
 
 const port = PORT || 4000;
 app.listen(port, () => {
-  console.log('server is running at http://localhost:4000');
+	console.log('server is running at http://localhost:4000');
 });
