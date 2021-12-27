@@ -39,7 +39,7 @@ export const checkOwnPost = (ctx, next) => {
     return;
   }
   return next();
-}
+};
 
 export const write = async (ctx) => {
   console.log(ctx);
@@ -79,6 +79,11 @@ export const list = async (ctx) => {
     ctx.status = 400;
     return;
   }
+  const { tag, username } = ctx.query;
+  const query = {
+    ...(username ? { 'user.username': username } : {}),
+    ...(tag ? { tags: tag } : {}),
+  };
   try {
     // const posts = await Post.find().exec();
 
@@ -90,7 +95,7 @@ export const list = async (ctx) => {
       .lean()
       .exec();
     // set lastpage
-    const postCount = await Post.countDocuments().exec();
+    const postCount = await Post.countDocuments(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 10));
     ctx.body = posts.map((post) => ({
       ...post,
